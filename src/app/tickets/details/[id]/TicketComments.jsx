@@ -1,5 +1,6 @@
 "use client";
 import React, { useRef } from "react";
+import classes from "./TicketDetails.module.css";
 
 const comments = [
   {
@@ -30,7 +31,7 @@ export const TicketComments = () => {
       </form>
       <section>
         {comments.map((comment) => (
-          <article key={comment.date}>
+          <article className={classes.comment} key={comment.date}>
             <strong>{comment.author}</strong>
             <time>{comment.date}</time>
             <p>{comment.content}</p>
