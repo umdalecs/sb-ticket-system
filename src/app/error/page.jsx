@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { use } from "react";
+import { use } from "react";
 
 const page = ({ searchParams }) => {
   const { type } = use(searchParams);

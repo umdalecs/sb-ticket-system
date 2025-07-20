@@ -5,13 +5,16 @@ import nodemailer from "nodemailer";
 export async function POST(request) {
   const formData = await request.formData();
   const email = formData.get("email");
+  const type = formData.get("type") === "recovery" ? "recovery" : "magicLink";
 
   const supabaseAdmin = getSupabaseAdminClient();
 
-  const { data: linkData, error } = await supabaseAdmin.auth.admin.generateLink({
-    email,
-    type: "magiclink",
-  });
+  const { data: linkData, error } = await supabaseAdmin.auth.admin.generateLink(
+    {
+      email,
+      type: "magiclink",
+    }
+  );
 
   if (error) {
     return NextResponse.redirect(
@@ -23,7 +26,7 @@ export async function POST(request) {
   const { hashed_token } = linkData.properties;
 
   const constructedLink = new URL(
-    `/auth/verify?hashed_token=${hashed_token}`,
+    `/auth/verify?hashed_token=${hashed_token}&type=${type}`,
     request.url
   );
 
