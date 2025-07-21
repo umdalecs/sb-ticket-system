@@ -3,8 +3,9 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { getSupabaseBrowserClient } from "@/supabase-utils/browserClient";
 import { useRouter } from "next/navigation";
+import { urlPath } from "@/utils/url-helpers";
 
-export const Login = ({ isPasswordLogin }) => {
+export const Login = ({ isPasswordLogin, tenant, tenantName }) => {
   const emailInputRef = useRef(null);
   const passwordInputRef = useRef(null);
 
@@ -16,7 +17,7 @@ export const Login = ({ isPasswordLogin }) => {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN") {
-        router.push("/tickets");
+        router.push(urlPath("/tickets", tenant));
       }
     });
 
@@ -25,7 +26,11 @@ export const Login = ({ isPasswordLogin }) => {
 
   return (
     <form
-      action={isPasswordLogin ? "/auth/pw-login" : "auth/magic-link"}
+      action={
+        isPasswordLogin
+          ? urlPath("/auth/pw-login", tenant)
+          : urlPath("/auth/magic-link", tenant)
+      }
       method="POST"
       onSubmit={(event) => {
         isPasswordLogin && event.preventDefault();
@@ -42,7 +47,12 @@ export const Login = ({ isPasswordLogin }) => {
       }}
     >
       <article style={{ maxWidth: "420px", margin: "auto" }}>
-        <header>Login</header>
+        <header>
+          Login
+          <div style={{ display: "block", fontSize: "0.7em" }}>
+            {tenantName}
+          </div>
+        </header>
         <fieldset>
           <label htmlFor="email">
             Email
@@ -69,11 +79,21 @@ export const Login = ({ isPasswordLogin }) => {
 
         <p>
           {isPasswordLogin ? (
-            <Link href={{ pathname: "/", query: { magicLink: "yes" } }}>
+            <Link
+              href={{
+                pathname: urlPath("/", tenant),
+                query: { magicLink: "yes" },
+              }}
+            >
               Go to Magic Link Login
             </Link>
           ) : (
-            <Link href={{ pathname: "/", query: { magicLink: "no" } }}>
+            <Link
+              href={{
+                pathname: urlPath("/", tenant),
+                query: { magicLink: "no" },
+              }}
+            >
               Go to Password Login
             </Link>
           )}

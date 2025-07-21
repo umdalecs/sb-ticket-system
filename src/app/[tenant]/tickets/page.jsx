@@ -1,3 +1,4 @@
+import { use } from "react";
 import { TicketList } from "./TicketList";
 
 const dummyTickets = [
@@ -21,11 +22,12 @@ const dummyTickets = [
   },
 ];
 
-export const page = () => {
+export const page = ({params}) => {
+  const {tenant} = use(params)
   return (
     <>
       <h2>Ticket List</h2>
-      <TicketList tickets={dummyTickets} />
+      <TicketList tickets={dummyTickets} tenant={tenant} />
     </>
   );
 };

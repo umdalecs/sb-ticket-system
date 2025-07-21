@@ -1,8 +1,10 @@
+import { urlPath } from "@/utils/url-helpers";
 import Link from "next/link";
 import { use } from "react";
 
-const page = ({ searchParams }) => {
+const page = ({ searchParams, params }) => {
   const { type } = use(searchParams);
+  const { tenant } = use(params);
   const knownErrors = ["login-failed", "magiclink", "invalid_magiclink"];
   return (
     <div style={{ textAlign: "center" }}>
@@ -29,7 +31,7 @@ const page = ({ searchParams }) => {
       <br />
       <br />
 
-      <Link role="button" href="/">
+      <Link role="button" href={urlPath("/", tenant)}>
         Go back.
       </Link>
     </div>

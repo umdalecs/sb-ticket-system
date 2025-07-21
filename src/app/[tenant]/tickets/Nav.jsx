@@ -1,10 +1,11 @@
 "use client";
 import { getSupabaseBrowserClient } from "@/supabase-utils/browserClient";
+import { urlPath } from "@/utils/url-helpers";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-export const Nav = () => {
+export const Nav = ({ tenant }) => {
   const pathname = usePathname();
 
   const activeProps = { className: "contrast" };
@@ -18,7 +19,7 @@ export const Nav = () => {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_OUT") {
-        router.push("/");
+        router.push(`/${tenant}`);
       }
     });
 
@@ -31,8 +32,10 @@ export const Nav = () => {
         <li>
           <Link
             role="button"
-            href="/tickets"
-            {...(pathname === "/tickets" ? activeProps : inactiveProps)}
+            href={urlPath("/tickets", tenant)}
+            {...(pathname === urlPath("/tickets", tenant)
+              ? activeProps
+              : inactiveProps)}
           >
             Ticket List
           </Link>
@@ -40,8 +43,10 @@ export const Nav = () => {
         <li>
           <Link
             role="button"
-            href="/tickets/new"
-            {...(pathname === "/tickets/new" ? activeProps : inactiveProps)}
+            href={urlPath("/tickets/new", tenant)}
+            {...((pathname === pathname) === "/tickets/new"
+              ? activeProps
+              : inactiveProps)}
           >
             Create new Ticket
           </Link>
@@ -49,8 +54,10 @@ export const Nav = () => {
         <li>
           <Link
             role="button"
-            href="/tickets/users"
-            {...(pathname === "/tickets/users" ? activeProps : inactiveProps)}
+            href={urlPath("/tickets/users", tenant)}
+            {...(pathname === urlPath("/tickets/users", tenant)
+              ? activeProps
+              : inactiveProps)}
           >
             User List
           </Link>
