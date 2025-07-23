@@ -21,6 +21,9 @@
   "[typescript]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
   },
+  "[javascriptreact][javascript]": {
+    "editor.formatOnSave": true
+  },
   "cSpell.words": [
     "magiclink",
     "supabase"
