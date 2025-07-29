@@ -1,9 +1,8 @@
-import React, { use } from "react";
 import { TenantName } from "./TenantName";
 import { Nav } from "./Nav";
 
-export const layout = ({ children, params }) => {
-  const { tenant } = use(params);
+export default async function Layout({ children, params }) {
+  const { tenant } = await params;
   return (
     <>
       <section style={{ borderBottom: "1px solid gray" }}>
@@ -13,6 +12,4 @@ export const layout = ({ children, params }) => {
       <section>{children}</section>
     </>
   );
-};
-
-export default layout;
+}

@@ -1,14 +1,12 @@
-import { use } from "react";
 import classes from "./TicketDetails.module.css";
 import { TicketComments } from "./TicketComments";
 
-const page = (props) => {
-  const params = use(props.params);
-
+export default async function Page({ params }) {
+  const { id } = await params;
   return (
     <article className={classes.ticketDetails}>
       <header>
-        <strong>#{params.id}</strong> -{" "}
+        <strong>#{id}</strong> -{" "}
         <strong className={classes.ticketStatusGreen}>Open</strong>
         <br />
         <small className={classes.authorAndDate}>
@@ -23,6 +21,4 @@ const page = (props) => {
       <TicketComments />
     </article>
   );
-};
-
-export default page;
+}

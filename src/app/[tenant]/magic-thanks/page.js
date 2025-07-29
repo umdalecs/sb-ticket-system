@@ -1,9 +1,8 @@
 import { urlPath } from "@/utils/url-helpers";
 import Link from "next/link";
-import { use } from "react";
 
-const page = ({ params }) => {
-  const { tenant } = use(params);
+export default async function Page({ params }) {
+  const { tenant } = await params;
   return (
     <div style={{ textAlign: "center" }}>
       <h1>Magic on its way!</h1>
@@ -15,6 +14,4 @@ const page = ({ params }) => {
       </Link>
     </div>
   );
-};
-
-export default page;
+}

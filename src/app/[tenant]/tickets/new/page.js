@@ -1,7 +1,7 @@
 "use client";
 import { useRef } from "react";
 
-const page = () => {
+export default function Page() {
   const ticketTitleRef = useRef(null);
   const ticketDescriptionRef = useRef(null);
   return (
@@ -20,6 +20,4 @@ const page = () => {
       </form>
     </article>
   );
-};
-
-export default page;
+}

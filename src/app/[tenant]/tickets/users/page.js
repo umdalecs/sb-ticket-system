@@ -9,7 +9,7 @@ const users = [
   },
 ];
 
-const page = () => {
+export default function Page() {
   return (
     <table>
       <thead>
@@ -30,6 +30,4 @@ const page = () => {
       </tbody>
     </table>
   );
-};
-
-export default page;
+}

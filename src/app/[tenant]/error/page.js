@@ -1,10 +1,9 @@
 import { urlPath } from "@/utils/url-helpers";
 import Link from "next/link";
-import { use } from "react";
 
-const page = ({ searchParams, params }) => {
-  const { type } = use(searchParams);
-  const { tenant } = use(params);
+export default async function Page({ searchParams, params }) {
+  const { type } = await searchParams;
+  const { tenant } = await params;
   const knownErrors = ["login-failed", "magiclink", "invalid_magiclink"];
   return (
     <div style={{ textAlign: "center" }}>
@@ -36,6 +35,4 @@ const page = ({ searchParams, params }) => {
       </Link>
     </div>
   );
-};
-
-export default page;
+}

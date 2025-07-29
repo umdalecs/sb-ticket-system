@@ -1,4 +1,3 @@
-import { use } from "react";
 import { TicketList } from "./TicketList";
 
 const dummyTickets = [
@@ -22,14 +21,12 @@ const dummyTickets = [
   },
 ];
 
-export const page = ({params}) => {
-  const {tenant} = use(params)
+export default async function Page({ params }) {
+  const { tenant } = await params;
   return (
     <>
       <h2>Ticket List</h2>
       <TicketList tickets={dummyTickets} tenant={tenant} />
     </>
   );
-};
-
-export default page;
+}

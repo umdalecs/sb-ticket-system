@@ -3,7 +3,7 @@
 import { getSupabaseBrowserClient } from "@/supabase-utils/browserClient";
 import { useRef } from "react";
 
-export default function ChangePasswordPage() {
+export default function Page() {
   const passwordRef = useRef(null);
   const supabase = getSupabaseBrowserClient();
 
