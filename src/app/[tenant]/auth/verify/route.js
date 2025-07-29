@@ -3,25 +3,31 @@ import { buildUrl } from "@/utils/url-helpers";
 import { NextResponse } from "next/server";
 
 export async function GET(request, { params }) {
+  const { tenant } = await params;
+
   const { searchParams } = new URL(request.url);
-  const { hashed_token } = searchParams.get("hashed_token");
+  const hashed_token = searchParams.get("hashed_token");
+  const isRecovery = searchParams.get("type") === "recovery";
 
-  const supabase = getSupabaseCookiesUtilClient();
+  const tenantUrl = (url) => buildUrl(url, tenant, request);
+  const getRedirect = (url) => NextResponse.redirect(url);
 
-  const { error } = supabase.auth.verifyOtp({
-    type: "magiclink",
+  let verifyType = "magiclink";
+  if (isRecovery) verifyType = "recovery";
+
+  const supabase = await getSupabaseCookiesUtilClient();
+
+  const { error } = await supabase.auth.verifyOtp({
+    type: verifyType,
     token_hash: hashed_token,
   });
 
   if (error) {
-    return NextResponse.redirect(
-      buildUrl("/error?type=invalid_magiclink", params.tenant, request)
-    );
+    console.log(error);
+    return getRedirect(tenantUrl("/error?type=invalid_magiclink"));
   }
-  if (searchParams.get("type") === "recovery") {
-    return NextResponse.redirect(
-      buildUrl("/tickets/change-password", params.tenant, request)
-    );
+  if (isRecovery) {
+    return getRedirect(tenantUrl("/tickets/change-password"));
   }
-  return NextResponse.redirect(buildUrl("/tickets", params.tenant, request));
+  return getRedirect(tenantUrl("/tickets"));
 }

@@ -3,9 +3,12 @@ import { buildUrl } from "@/utils/url-helpers";
 import { NextResponse } from "next/server";
 
 export async function POST(request, { params }) {
+  const { tenant } = await params;
   const formData = await request.formData();
   const email = formData.get("email");
   const password = formData.get("password");
+
+  const tenantUrl = (url) => buildUrl(url, tenant, request);
 
   const supabase = getSupabaseCookiesUtilClient();
 
@@ -16,13 +19,12 @@ export async function POST(request, { params }) {
 
   const userData = data?.user;
   if (error || !userData) {
-    return NextResponse.redirect(
-      buildUrl("/error?type=login-failed", params.tenant, request),
-      { status: 302 }
-    );
+    return NextResponse.redirect(tenantUrl("/error?type=login-failed"), {
+      status: 302,
+    });
   }
 
-  return NextResponse.redirect(buildUrl("/tickets", params.tenant, request), {
+  return NextResponse.redirect(tenantUrl("/tickets"), {
     status: 302,
   });
 }
