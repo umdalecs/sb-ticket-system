@@ -1,7 +1,8 @@
 import { getSupabaseCookiesUtilClient } from "@/supabase-utils/cookiesUtilClient";
+import { buildUrl } from "@/utils/url-helpers";
 import { NextResponse } from "next/server";
 
-export async function GET(request) {
+export async function GET(request, { params }) {
   const { searchParams } = new URL(request.url);
   const { hashed_token } = searchParams.get("hashed_token");
 
@@ -14,13 +15,13 @@ export async function GET(request) {
 
   if (error) {
     return NextResponse.redirect(
-      new URL("/error?type=invalid_magiclink", request.url)
+      buildUrl("/error?type=invalid_magiclink", params.tenant, request)
     );
   }
   if (searchParams.get("type") === "recovery") {
     return NextResponse.redirect(
-      new URL("/tickets/change-password", request.url)
+      buildUrl("/tickets/change-password", params.tenant, request)
     );
   }
-  return NextResponse.redirect(new URL("/tickets", request.url));
+  return NextResponse.redirect(buildUrl("/tickets", params.tenant, request));
 }

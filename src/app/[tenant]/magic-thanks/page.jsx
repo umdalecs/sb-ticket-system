@@ -1,5 +1,6 @@
 import { urlPath } from "@/utils/url-helpers";
 import Link from "next/link";
+import { use } from "react";
 
 const page = ({ params }) => {
   const { tenant } = use(params);
